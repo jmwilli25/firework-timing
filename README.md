@@ -40,7 +40,7 @@ PYTHONPATH=src python3 -m firework_timing \
 	--input fireworks.txt \
 	--output plan.json \
 	--delay 5.0 \
-	--print-table
+	--print-staging
 ```
 
 This writes a JSON file that the web UI can load.
@@ -50,6 +50,35 @@ This writes a JSON file that the web UI can load.
 ```bash
 PYTHONPATH=src python3 -m unittest discover -s tests -p "test_*.py"
 ```
+
+## Dry-Run Workflow (Seed 90)
+
+Use this exact sequence for a repeatable rehearsal:
+
+1. Generate the plan and print station staging order:
+
+```bash
+PYTHONPATH=src python3 -m firework_timing \
+	--input fireworks.txt \
+	--output plan.json \
+	--delay 5.0 \
+	--seed 90 \
+	--print-staging
+```
+
+2. Start the execution UI:
+
+```bash
+python3 -m http.server 8000 -d web
+```
+
+3. Open `http://localhost:8000`, load `plan.json`, then run a full rehearsal.
+
+4. During rehearsal, test the critical live controls:
+
+- Pause and Resume.
+- Delay `+/-` adjustments.
+- DUD flow (confirm checkbox then DUD button).
 
 ## Run the Live UI
 

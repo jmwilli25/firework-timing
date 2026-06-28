@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from pathlib import Path
+import random
 from typing import Dict, Iterable, List, Sequence, Tuple
 
 
@@ -167,7 +168,9 @@ def _station_target_counts(total_fireworks: int, station_count: int) -> List[int
 
 
 def assign_fireworks(
-    fireworks: Sequence[Firework], station_count: int = 3
+    fireworks: Sequence[Firework],
+    station_count: int = 3,
+    rng: random.Random | None = None,
 ) -> List[StationPlan]:
     """Assign fireworks to stations with balanced duration and fixed count rules."""
     if station_count != 3:
@@ -187,10 +190,19 @@ def assign_fireworks(
         candidate_indices = [
             idx for idx in range(station_count) if len(station_items[idx]) < targets[idx]
         ]
-        best_idx = min(
-            candidate_indices,
-            key=lambda idx: (station_totals[idx], len(station_items[idx]), idx),
+        best_score = min(
+            (station_totals[idx], len(station_items[idx])) for idx in candidate_indices
         )
+        best_candidates = [
+            idx
+            for idx in candidate_indices
+            if (station_totals[idx], len(station_items[idx])) == best_score
+        ]
+
+        if rng is None:
+            best_idx = min(best_candidates)
+        else:
+            best_idx = rng.choice(best_candidates)
 
         station_items[best_idx].append(firework)
         station_totals[best_idx] += firework.duration_seconds
@@ -205,6 +217,14 @@ def assign_fireworks(
     ]
 
     return station_plans
+
+
+def _product_name(firework_name: str) -> str:
+    """Normalize numbered variants to product name for repeat avoidance."""
+    left, sep, right = firework_name.rpartition("-")
+    if sep and right.isdigit() and left:
+        return left
+    return firework_name
 
 
 def _zigzag_durations(fireworks: List[Firework]) -> List[Firework]:
@@ -229,32 +249,89 @@ def _zigzag_durations(fireworks: List[Firework]) -> List[Firework]:
     return result
 
 
-def _build_event_sequence(stations: Sequence[StationPlan]) -> List[Tuple[int, Firework]]:
-    """Create station call order in rotating station sequence 1, 2, 3."""
+def _choose_station_firework(
+    queue: List[Firework], last_product_name: str | None, rng: random.Random
+) -> Firework:
+    """Choose next firework for a station while avoiding immediate repeats."""
+    non_repeat = [
+        firework for firework in queue if _product_name(firework.name) != last_product_name
+    ]
+    pool = non_repeat if non_repeat else queue
+    return rng.choice(pool)
+
+
+def _count_adjacent_product_collisions(sequence: Sequence[Tuple[int, Firework]]) -> int:
+    """Count back-to-back events that use the same normalized product name."""
+    collisions = 0
+    previous_name: str | None = None
+    for _, firework in sequence:
+        current_name = _product_name(firework.name)
+        if previous_name == current_name:
+            collisions += 1
+        previous_name = current_name
+    return collisions
+
+
+def _build_event_sequence_once(
+    stations: Sequence[StationPlan], rng: random.Random
+) -> List[Tuple[int, Firework]]:
+    """Build one candidate sequence using anti-repeat random selection."""
     station_queues: Dict[int, List[Firework]] = {
         station.station_id: _zigzag_durations(list(station.fireworks))
         for station in stations
     }
-    max_count = max(len(station.fireworks) for station in stations)
 
     sequence: List[Tuple[int, Firework]] = []
-    for round_index in range(max_count):
+    last_product_name: str | None = None
+
+    while any(station_queues.values()):
         for station_id in (1, 2, 3):
             queue = station_queues[station_id]
-            if round_index < len(queue):
-                sequence.append((station_id, queue[round_index]))
+            if not queue:
+                continue
+
+            selected = _choose_station_firework(queue, last_product_name, rng)
+            queue.remove(selected)
+            sequence.append((station_id, selected))
+            last_product_name = _product_name(selected.name)
 
     return sequence
 
 
+def _build_event_sequence(
+    stations: Sequence[StationPlan], rng: random.Random
+) -> List[Tuple[int, Firework]]:
+    """Create station call order in rotating station sequence 1, 2, 3.
+
+    The planner samples multiple valid randomized sequences and picks the one
+    with the fewest adjacent same-product collisions.
+    """
+    best_sequence: List[Tuple[int, Firework]] = []
+    best_collisions: int | None = None
+
+    search_attempts = max(24, len(stations) * 40)
+    for _ in range(search_attempts):
+        attempt_rng = random.Random(rng.randrange(0, 2**32))
+        candidate = _build_event_sequence_once(stations, attempt_rng)
+        candidate_collisions = _count_adjacent_product_collisions(candidate)
+
+        if best_collisions is None or candidate_collisions < best_collisions:
+            best_collisions = candidate_collisions
+            best_sequence = candidate
+            if best_collisions == 0:
+                break
+
+    return best_sequence
+
+
 def build_schedule(
-    stations: Sequence[StationPlan], delay_seconds: float
+    stations: Sequence[StationPlan], delay_seconds: float, rng: random.Random
 ) -> List[CueEvent]:
     """Build the execution timeline with overlap-preferred cue timing."""
     if delay_seconds <= 0:
         raise ValueError("delay_seconds must be greater than zero.")
 
-    sequence = _build_event_sequence(stations)
+    sequence = _build_event_sequence(stations, rng)
     events: List[CueEvent] = []
 
     for order_index, (station_id, firework) in enumerate(sequence):
@@ -284,11 +361,18 @@ def build_schedule(
 
 
 def build_plan(
-    fireworks: Sequence[Firework], delay_seconds: float = 5.0
+    fireworks: Sequence[Firework],
+    delay_seconds: float = 5.0,
+    random_seed: int | None = None,
 ) -> Plan:
-    """Build the complete station assignment and execution schedule."""
-    stations = assign_fireworks(fireworks)
-    events = build_schedule(stations, delay_seconds=delay_seconds)
+    """Build the complete station assignment and execution schedule.
+
+    When ``random_seed`` is omitted, the planner uses true randomness to reduce
+    repeated back-to-back product names in the cue sequence.
+    """
+    rng = random.Random(random_seed)
+    stations = assign_fireworks(fireworks, rng=rng)
+    events = build_schedule(stations, delay_seconds=delay_seconds, rng=rng)
     return Plan(delay_seconds=delay_seconds, stations=stations, events=events)
 
 

@@ -4,10 +4,11 @@ from __future__ import annotations
 
 import argparse
 import json
+from collections import defaultdict
 from pathlib import Path
 from typing import Sequence
 
-from .planner import build_plan, parse_fireworks_file, render_station_table
+from .planner import build_plan, parse_fireworks_file
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -36,12 +37,34 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Call-to-burst delay in seconds. Default: 5.0",
     )
     parser.add_argument(
-        "--print-table",
+        "--print-staging",
         action="store_true",
-        help="Print station assignment table to stdout.",
+        help="Print per-station firing order from generated events.",
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=None,
+        help="Optional random seed for reproducible plan generation.",
     )
 
     return parser
+
+
+def _print_staging(plan_dict: dict) -> None:
+    """Print per-station staging order from serialized plan events."""
+    per_station = defaultdict(list)
+    for event in sorted(plan_dict["events"], key=lambda item: item["order_index"]):
+        per_station[event["station_id"]].append(event)
+
+    for station_id in sorted(per_station):
+        print(f"Station {station_id} staging order:")
+        for index, event in enumerate(per_station[station_id], start=1):
+            print(
+                f"  {index:02d}. {event['firework_name']} "
+                f"({event['duration_seconds']}s)"
+            )
+        print()
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -50,13 +73,18 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     fireworks = parse_fireworks_file(args.input)
-    plan = build_plan(fireworks, delay_seconds=args.delay)
+    plan = build_plan(
+        fireworks,
+        delay_seconds=args.delay,
+        random_seed=args.seed,
+    )
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(plan.to_dict(), indent=2), encoding="utf-8")
+    serialized_plan = plan.to_dict()
+    args.output.write_text(json.dumps(serialized_plan, indent=2), encoding="utf-8")
 
-    if args.print_table:
-        print(render_station_table(plan.stations))
+    if args.print_staging:
+        _print_staging(serialized_plan)
 
     print(f"Wrote plan JSON to {args.output}")
     return 0

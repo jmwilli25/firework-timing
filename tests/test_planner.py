@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import random
 import unittest
 
 from firework_timing.planner import (
@@ -124,7 +125,7 @@ class PlannerTests(unittest.TestCase):
         self.assertEqual([3, 3, 2], counts)
 
     def test_plan_generation_is_deterministic(self) -> None:
-        """Same input should produce same event sequence."""
+        """Same input and same seed should produce the same event sequence."""
         raw = "\n".join(
             [
                 "w1=40",
@@ -136,8 +137,8 @@ class PlannerTests(unittest.TestCase):
             ]
         )
         fireworks = parse_fireworks_text(raw)
-        plan_one = build_plan(fireworks, delay_seconds=5.0)
-        plan_two = build_plan(fireworks, delay_seconds=5.0)
+        plan_one = build_plan(fireworks, delay_seconds=5.0, random_seed=2026)
+        plan_two = build_plan(fireworks, delay_seconds=5.0, random_seed=2026)
 
         one_keys = [
             (event.station_id, event.firework_id, event.call_time_seconds)
@@ -183,13 +184,51 @@ class PlannerTests(unittest.TestCase):
         fireworks = parse_fireworks_text("a=10\nb=10\nc=10")
         stations = assign_fireworks(fireworks)
         with self.assertRaises(ValueError):
-            build_schedule(stations, delay_seconds=0)
+            build_schedule(stations, delay_seconds=0, rng=random.Random(1))
 
     def test_build_plan_rejects_non_positive_delay(self) -> None:
         """End-to-end plan builder should reject non-positive delay values."""
         fireworks = parse_fireworks_text("a=10\nb=10\nc=10")
         with self.assertRaises(ValueError):
             build_plan(fireworks, delay_seconds=-1)
+
+    def test_scheduler_avoids_immediate_repeat_when_possible(self) -> None:
+        """Scheduler should avoid same product in back-to-back cues when possible."""
+        fireworks = parse_fireworks_text(
+            "\n".join(
+                [
+                    "fw-1=30",
+                    "fw-2=30",
+                    "fw-3=30",
+                    "fw1-1=45",
+                    "fw1-2=45",
+                    "fw1-3=45",
+                ]
+            )
+        )
+        plan = build_plan(fireworks, delay_seconds=5.0, random_seed=99)
+        product_names = [event.firework_name.split("-")[0] for event in plan.events]
+        for current, following in zip(product_names, product_names[1:]):
+            self.assertNotEqual(current, following)
+
+    def test_three_and_three_pairing_avoids_adjacent_repeats(self) -> None:
+        """Classic 3+3 case should not place same product in consecutive events."""
+        fireworks = parse_fireworks_text(
+            "\n".join(
+                [
+                    "fw-1=30",
+                    "fw-2=30",
+                    "fw-3=30",
+                    "fw1-1=45",
+                    "fw1-2=45",
+                    "fw1-3=45",
+                ]
+            )
+        )
+        plan = build_plan(fireworks, delay_seconds=5.0, random_seed=90)
+        product_names = [event.firework_name.split("-")[0] for event in plan.events]
+        for current, following in zip(product_names, product_names[1:]):
+            self.assertNotEqual(current, following)
 
 
 if __name__ == "__main__":
