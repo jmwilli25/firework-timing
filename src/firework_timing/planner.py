@@ -207,10 +207,33 @@ def assign_fireworks(
     return station_plans
 
 
+def _zigzag_durations(fireworks: List[Firework]) -> List[Firework]:
+    """Reorder fireworks so durations alternate short-long-short-long.
+
+    Sorting monotonically (all long first or all short first) would make the
+    show trend in one direction. Zigzagging gives a varied feel across rounds
+    by interleaving the shortest and longest remaining items.
+    """
+    ascending = sorted(fireworks, key=lambda item: item.duration_seconds)
+    result: List[Firework] = []
+    left, right = 0, len(ascending) - 1
+    take_short = True
+    while left <= right:
+        if take_short:
+            result.append(ascending[left])
+            left += 1
+        else:
+            result.append(ascending[right])
+            right -= 1
+        take_short = not take_short
+    return result
+
+
 def _build_event_sequence(stations: Sequence[StationPlan]) -> List[Tuple[int, Firework]]:
     """Create station call order in rotating station sequence 1, 2, 3."""
     station_queues: Dict[int, List[Firework]] = {
-        station.station_id: list(station.fireworks) for station in stations
+        station.station_id: _zigzag_durations(list(station.fireworks))
+        for station in stations
     }
     max_count = max(len(station.fireworks) for station in stations)
 
