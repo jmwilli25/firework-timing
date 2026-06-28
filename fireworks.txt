@@ -1,0 +1,14 @@
+crossette-1=30
+crossette-2=30
+brocade-1=45
+brocade-2=45
+comet-1=25
+comet-2=25
+willow-1=50
+willow-2=50
+mine-1=35
+mine-2=35
+report-1=20
+report-2=20
+peony-1=28
+peony-2=28

@@ -1,0 +1,250 @@
+{
+  "version": 1,
+  "delay_seconds": 5.0,
+  "stations": [
+    {
+      "station_id": 1,
+      "total_seconds": 163.0,
+      "fireworks": [
+        {
+          "firework_id": "willow-1#1",
+          "name": "willow-1",
+          "duration_seconds": 50.0,
+          "source_line": 7
+        },
+        {
+          "firework_id": "mine-1#1",
+          "name": "mine-1",
+          "duration_seconds": 35.0,
+          "source_line": 9
+        },
+        {
+          "firework_id": "crossette-1#1",
+          "name": "crossette-1",
+          "duration_seconds": 30.0,
+          "source_line": 1
+        },
+        {
+          "firework_id": "peony-2#1",
+          "name": "peony-2",
+          "duration_seconds": 28.0,
+          "source_line": 14
+        },
+        {
+          "firework_id": "report-2#1",
+          "name": "report-2",
+          "duration_seconds": 20.0,
+          "source_line": 12
+        }
+      ]
+    },
+    {
+      "station_id": 2,
+      "total_seconds": 160.0,
+      "fireworks": [
+        {
+          "firework_id": "willow-2#1",
+          "name": "willow-2",
+          "duration_seconds": 50.0,
+          "source_line": 8
+        },
+        {
+          "firework_id": "mine-2#1",
+          "name": "mine-2",
+          "duration_seconds": 35.0,
+          "source_line": 10
+        },
+        {
+          "firework_id": "crossette-2#1",
+          "name": "crossette-2",
+          "duration_seconds": 30.0,
+          "source_line": 2
+        },
+        {
+          "firework_id": "comet-1#1",
+          "name": "comet-1",
+          "duration_seconds": 25.0,
+          "source_line": 5
+        },
+        {
+          "firework_id": "report-1#1",
+          "name": "report-1",
+          "duration_seconds": 20.0,
+          "source_line": 11
+        }
+      ]
+    },
+    {
+      "station_id": 3,
+      "total_seconds": 143.0,
+      "fireworks": [
+        {
+          "firework_id": "brocade-1#1",
+          "name": "brocade-1",
+          "duration_seconds": 45.0,
+          "source_line": 3
+        },
+        {
+          "firework_id": "brocade-2#1",
+          "name": "brocade-2",
+          "duration_seconds": 45.0,
+          "source_line": 4
+        },
+        {
+          "firework_id": "peony-1#1",
+          "name": "peony-1",
+          "duration_seconds": 28.0,
+          "source_line": 13
+        },
+        {
+          "firework_id": "comet-2#1",
+          "name": "comet-2",
+          "duration_seconds": 25.0,
+          "source_line": 6
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "order_index": 0,
+      "station_id": 1,
+      "firework_id": "willow-1#1",
+      "firework_name": "willow-1",
+      "duration_seconds": 50.0,
+      "call_time_seconds": 0.0,
+      "expected_burst_seconds": 5.0,
+      "expected_end_seconds": 55.0
+    },
+    {
+      "order_index": 1,
+      "station_id": 2,
+      "firework_id": "willow-2#1",
+      "firework_name": "willow-2",
+      "duration_seconds": 50.0,
+      "call_time_seconds": 50.0,
+      "expected_burst_seconds": 55.0,
+      "expected_end_seconds": 105.0
+    },
+    {
+      "order_index": 2,
+      "station_id": 3,
+      "firework_id": "brocade-1#1",
+      "firework_name": "brocade-1",
+      "duration_seconds": 45.0,
+      "call_time_seconds": 100.0,
+      "expected_burst_seconds": 105.0,
+      "expected_end_seconds": 150.0
+    },
+    {
+      "order_index": 3,
+      "station_id": 1,
+      "firework_id": "mine-1#1",
+      "firework_name": "mine-1",
+      "duration_seconds": 35.0,
+      "call_time_seconds": 145.0,
+      "expected_burst_seconds": 150.0,
+      "expected_end_seconds": 185.0
+    },
+    {
+      "order_index": 4,
+      "station_id": 2,
+      "firework_id": "mine-2#1",
+      "firework_name": "mine-2",
+      "duration_seconds": 35.0,
+      "call_time_seconds": 180.0,
+      "expected_burst_seconds": 185.0,
+      "expected_end_seconds": 220.0
+    },
+    {
+      "order_index": 5,
+      "station_id": 3,
+      "firework_id": "brocade-2#1",
+      "firework_name": "brocade-2",
+      "duration_seconds": 45.0,
+      "call_time_seconds": 215.0,
+      "expected_burst_seconds": 220.0,
+      "expected_end_seconds": 265.0
+    },
+    {
+      "order_index": 6,
+      "station_id": 1,
+      "firework_id": "crossette-1#1",
+      "firework_name": "crossette-1",
+      "duration_seconds": 30.0,
+      "call_time_seconds": 260.0,
+      "expected_burst_seconds": 265.0,
+      "expected_end_seconds": 295.0
+    },
+    {
+      "order_index": 7,
+      "station_id": 2,
+      "firework_id": "crossette-2#1",
+      "firework_name": "crossette-2",
+      "duration_seconds": 30.0,
+      "call_time_seconds": 290.0,
+      "expected_burst_seconds": 295.0,
+      "expected_end_seconds": 325.0
+    },
+    {
+      "order_index": 8,
+      "station_id": 3,
+      "firework_id": "peony-1#1",
+      "firework_name": "peony-1",
+      "duration_seconds": 28.0,
+      "call_time_seconds": 320.0,
+      "expected_burst_seconds": 325.0,
+      "expected_end_seconds": 353.0
+    },
+    {
+      "order_index": 9,
+      "station_id": 1,
+      "firework_id": "peony-2#1",
+      "firework_name": "peony-2",
+      "duration_seconds": 28.0,
+      "call_time_seconds": 348.0,
+      "expected_burst_seconds": 353.0,
+      "expected_end_seconds": 381.0
+    },
+    {
+      "order_index": 10,
+      "station_id": 2,
+      "firework_id": "comet-1#1",
+      "firework_name": "comet-1",
+      "duration_seconds": 25.0,
+      "call_time_seconds": 376.0,
+      "expected_burst_seconds": 381.0,
+      "expected_end_seconds": 406.0
+    },
+    {
+      "order_index": 11,
+      "station_id": 3,
+      "firework_id": "comet-2#1",
+      "firework_name": "comet-2",
+      "duration_seconds": 25.0,
+      "call_time_seconds": 401.0,
+      "expected_burst_seconds": 406.0,
+      "expected_end_seconds": 431.0
+    },
+    {
+      "order_index": 12,
+      "station_id": 1,
+      "firework_id": "report-2#1",
+      "firework_name": "report-2",
+      "duration_seconds": 20.0,
+      "call_time_seconds": 426.0,
+      "expected_burst_seconds": 431.0,
+      "expected_end_seconds": 451.0
+    },
+    {
+      "order_index": 13,
+      "station_id": 2,
+      "firework_id": "report-1#1",
+      "firework_name": "report-1",
+      "duration_seconds": 20.0,
+      "call_time_seconds": 446.0,
+      "expected_burst_seconds": 451.0,
+      "expected_end_seconds": 471.0
+    }
+  ]
+}

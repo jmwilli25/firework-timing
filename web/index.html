@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firework Timing Runner</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-shape shape-a"></div>
+    <div class="bg-shape shape-b"></div>
+    <main class="app-shell">
+      <header class="top-bar">
+        <h1>Firework Timing Runner</h1>
+        <div class="loader-row">
+          <label for="plan-file" class="file-label">Load Plan JSON</label>
+          <input id="plan-file" type="file" accept="application/json" />
+          <button id="fullscreen-btn" type="button">Full Screen</button>
+        </div>
+      </header>
+
+      <section class="status-grid">
+        <article class="panel">
+          <h2>Countdown To Call</h2>
+          <p id="countdown" class="big-number">--</p>
+        </article>
+
+        <article class="panel panel-callout">
+          <h2>Call This Platform</h2>
+          <p id="callout-platform" class="callout">Load Plan</p>
+          <p id="callout-firework" class="firework-name">-</p>
+        </article>
+
+        <article class="panel">
+          <h2>Active Delay (sec)</h2>
+          <p id="delay-value" class="big-number">5.0</p>
+          <div class="delay-controls">
+            <button id="delay-minus" type="button">-</button>
+            <button id="delay-plus" type="button">+</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="control-strip">
+        <button id="start-btn" type="button">Start</button>
+        <button id="pause-btn" type="button">Pause</button>
+        <button id="resume-btn" type="button">Resume</button>
+        <button id="reset-btn" type="button">Reset</button>
+      </section>
+
+      <section class="dud-zone">
+        <label class="confirm-label">
+          <input id="dud-confirm" type="checkbox" />
+          I confirm this is a dud
+        </label>
+        <button id="dud-btn" type="button" disabled>DUD</button>
+      </section>
+
+      <section class="table-wrap">
+        <table id="station-table">
+          <thead>
+            <tr>
+              <th>Station</th>
+              <th>Total Seconds</th>
+              <th>Assigned Fireworks</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <p id="message" class="message">Load a plan JSON file to begin.</p>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
