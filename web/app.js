@@ -1,6 +1,7 @@
 const els = {
   fileInput: document.getElementById("plan-file"),
   fullscreenBtn: document.getElementById("fullscreen-btn"),
+  elapsedClock: document.getElementById("elapsed-clock"),
   countdown: document.getElementById("countdown"),
   calloutPlatform: document.getElementById("callout-platform"),
   calloutFirework: document.getElementById("callout-firework"),
@@ -43,6 +44,12 @@ function toWholeSeconds(value) {
 
 function toTenths(value) {
   return (Math.round(value * 10) / 10).toFixed(1);
+}
+
+function renderElapsed(seconds) {
+  const m = Math.floor(seconds / 60).toString().padStart(2, "0");
+  const s = Math.floor(seconds % 60).toString().padStart(2, "0");
+  els.elapsedClock.textContent = `${m}:${s}`;
 }
 
 function renderNudge() {
@@ -219,6 +226,7 @@ function renderCountdown() {
   }
 
   const nowSeconds = getElapsedSeconds();
+  renderElapsed(nowSeconds);
 
   while (
     state.nextIndex < state.runtimeEvents.length &&
@@ -229,6 +237,9 @@ function renderCountdown() {
 
   if (state.nextIndex >= state.runtimeEvents.length) {
     els.countdown.textContent = "DONE";
+    els.calloutPlatform.textContent = "🎇 SHOW COMPLETE 🎇";
+    els.calloutFirework.textContent = "Great job, Timing Czar!";
+    document.body.classList.add("show-done");
     setMessage("Plan complete.");
     return;
   }
@@ -309,6 +320,8 @@ function resetRun() {
   els.resetConfirm.checked = false;
   els.resetBtn.disabled = true;
   els.startBtn.disabled = false;
+  els.elapsedClock.textContent = "00:00";
+  document.body.classList.remove("show-done");
   setMessage("Reset complete.");
 }
 

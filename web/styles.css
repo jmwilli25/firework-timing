@@ -272,3 +272,40 @@ td {
     grid-template-columns: 1fr;
   }
 }
+
+.elapsed {
+  font-size: 1.2rem;
+  color: var(--accent);
+  margin-left: 12px;
+  vertical-align: middle;
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+body.show-done {
+  animation: party-bg 3s infinite alternate;
+}
+
+body.show-done .panel-callout {
+  background: #f59e0b;
+  animation: final-pulse 1s infinite alternate;
+}
+
+body.show-done .panel-callout h2,
+body.show-done .panel-callout .firework-name,
+body.show-done .panel-callout .callout {
+  color: #fff;
+}
+
+@keyframes party-bg {
+  0% { background-color: #164e63; }
+  50% { background-color: #9a3412; }
+  100% { background-color: #5b21b6; }
+}
+
+@keyframes final-pulse {
+  from { transform: scale(1); box-shadow: 0 0 20px #f59e0b; }
+  to { transform: scale(1.05); box-shadow: 0 0 50px #f59e0b; }
+}
