@@ -269,6 +269,7 @@ function startRun() {
   state.pauseElapsedSeconds = 0;
   initializeRuntimeEvents();
   startTicker();
+  els.startBtn.disabled = true;
   setMessage("Run started.");
   renderCountdown();
 }
@@ -307,6 +308,7 @@ function resetRun() {
   renderCountdown();
   els.resetConfirm.checked = false;
   els.resetBtn.disabled = true;
+  els.startBtn.disabled = false;
   setMessage("Reset complete.");
 }
 
