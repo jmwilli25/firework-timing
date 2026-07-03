@@ -31,12 +31,6 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Path where JSON plan will be written.",
     )
     parser.add_argument(
-        "--nudge",
-        type=float,
-        default=0.0,
-        help="Call duration nudge in seconds. Default: 0.0",
-    )
-    parser.add_argument(
         "--print-staging",
         action="store_true",
         help="Print per-station firing order from generated events.",
@@ -75,7 +69,6 @@ def main(argv: Sequence[str] | None = None) -> int:
     fireworks = parse_fireworks_file(args.input)
     plan = build_plan(
         fireworks,
-        nudge_seconds=args.nudge,
         random_seed=args.seed,
     )
 

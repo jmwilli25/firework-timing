@@ -137,15 +137,15 @@ class PlannerTests(unittest.TestCase):
             ]
         )
         fireworks = parse_fireworks_text(raw)
-        plan_one = build_plan(fireworks, nudge_seconds=0.0, random_seed=2026)
-        plan_two = build_plan(fireworks, nudge_seconds=0.0, random_seed=2026)
+        plan_one = build_plan(fireworks, random_seed=2026)
+        plan_two = build_plan(fireworks, random_seed=2026)
 
         one_keys = [
-            (event.station_id, event.firework_id, event.call_time_seconds)
+            (event.station_id, event.firework_id)
             for event in plan_one.events
         ]
         two_keys = [
-            (event.station_id, event.firework_id, event.call_time_seconds)
+            (event.station_id, event.firework_id)
             for event in plan_two.events
         ]
         self.assertEqual(one_keys, two_keys)
@@ -164,7 +164,7 @@ class PlannerTests(unittest.TestCase):
                 ]
             )
         )
-        plan = build_plan(fireworks, nudge_seconds=0.0)
+        plan = build_plan(fireworks)
         stations = [event.station_id for event in plan.events]
         self.assertEqual([1, 2, 3, 1, 2, 3], stations)
 
@@ -193,7 +193,7 @@ class PlannerTests(unittest.TestCase):
                 ]
             )
         )
-        plan = build_plan(fireworks, nudge_seconds=0.0, random_seed=99)
+        plan = build_plan(fireworks, random_seed=99)
         product_names = [event.firework_name.split("-")[0] for event in plan.events]
         for current, following in zip(product_names, product_names[1:]):
             self.assertNotEqual(current, following)
@@ -212,7 +212,7 @@ class PlannerTests(unittest.TestCase):
                 ]
             )
         )
-        plan = build_plan(fireworks, nudge_seconds=0.0, random_seed=90)
+        plan = build_plan(fireworks, random_seed=90)
         product_names = [event.firework_name.split("-")[0] for event in plan.events]
         for current, following in zip(product_names, product_names[1:]):
             self.assertNotEqual(current, following)

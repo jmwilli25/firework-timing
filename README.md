@@ -39,7 +39,6 @@ From the repository root:
 PYTHONPATH=src python3 -m firework_timing \
 	--input fireworks.txt \
 	--output plan.json \
-	--nudge 0 \
 	--print-staging
 ```
 
@@ -61,7 +60,6 @@ Use this exact sequence for a repeatable rehearsal:
 PYTHONPATH=src python3 -m firework_timing \
 	--input fireworks.txt \
 	--output plan.json \
-	--nudge 0 \
 	--seed 90 \
 	--print-staging
 ```

@@ -68,7 +68,6 @@ function parsePlan(planObject) {
     stations: planObject.stations,
     events: planObject.events,
     sequence,
-    nudge_seconds: Number(planObject.nudge_seconds || 0),
   };
 }
 
@@ -326,7 +325,7 @@ async function loadFromFile(file) {
 
   state.loadedPlan = parsed;
   state.sequence = parsed.sequence;
-  state.nudgeSeconds = Math.round(parsed.nudge_seconds || 0);
+  state.nudgeSeconds = 0;
   renderNudge();
   renderStationTable(parsed.stations, parsed.events);
   initializeRuntimeEvents();
