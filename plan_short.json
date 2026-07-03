@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "stations": [
+    {
+      "station_id": 1,
+      "total_seconds": 50.0,
+      "fireworks": [
+        {
+          "firework_id": "crossette-2#1",
+          "name": "crossette-2",
+          "duration_seconds": 30.0,
+          "source_line": 2
+        },
+        {
+          "firework_id": "report-2#1",
+          "name": "report-2",
+          "duration_seconds": 20.0,
+          "source_line": 4
+        }
+      ]
+    },
+    {
+      "station_id": 2,
+      "total_seconds": 30.0,
+      "fireworks": [
+        {
+          "firework_id": "crossette-1#1",
+          "name": "crossette-1",
+          "duration_seconds": 30.0,
+          "source_line": 1
+        }
+      ]
+    },
+    {
+      "station_id": 3,
+      "total_seconds": 20.0,
+      "fireworks": [
+        {
+          "firework_id": "report-1#1",
+          "name": "report-1",
+          "duration_seconds": 20.0,
+          "source_line": 3
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "order_index": 0,
+      "station_id": 1,
+      "firework_id": "report-2#1",
+      "firework_name": "report-2",
+      "duration_seconds": 20.0
+    },
+    {
+      "order_index": 1,
+      "station_id": 2,
+      "firework_id": "crossette-1#1",
+      "firework_name": "crossette-1",
+      "duration_seconds": 30.0
+    },
+    {
+      "order_index": 2,
+      "station_id": 3,
+      "firework_id": "report-1#1",
+      "firework_name": "report-1",
+      "duration_seconds": 20.0
+    },
+    {
+      "order_index": 3,
+      "station_id": 1,
+      "firework_id": "crossette-2#1",
+      "firework_name": "crossette-2",
+      "duration_seconds": 30.0
+    }
+  ]
+}

@@ -250,7 +250,7 @@ function renderCountdown() {
     els.countdown.textContent = "DONE";
     if (nowSeconds >= state.calloutLockUntil && !document.body.classList.contains("show-done")) {
       els.calloutPlatform.textContent = "🎇 SHOW COMPLETE 🎇";
-      els.calloutFirework.textContent = "Great job, Timing Czar!";
+      els.calloutFirework.textContent = "Great job!";
       document.body.classList.add("show-done");
       setMessage("Plan complete.");
     }
