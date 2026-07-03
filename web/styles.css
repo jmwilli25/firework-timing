@@ -21,6 +21,7 @@ body {
   min-height: 100vh;
   color: var(--text-main);
   font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  font-size: 1.15rem;
   background: radial-gradient(circle at 20% 10%, #164e63 0%, transparent 40%),
     radial-gradient(circle at 90% 20%, #9a3412 0%, transparent 35%),
     linear-gradient(155deg, var(--bg-ink), var(--bg-slate) 40%, var(--bg-teal));
@@ -71,7 +72,7 @@ body {
 
 .top-bar h1 {
   margin: 0;
-  font-size: clamp(1.25rem, 2.6vw, 2rem);
+  font-size: clamp(1.4rem, 2.8vw, 2.5rem);
 }
 
 .loader-row {
@@ -83,6 +84,7 @@ body {
 
 .file-label {
   font-weight: 700;
+  font-size: 1.25rem;
 }
 
 .status-grid {
@@ -102,8 +104,8 @@ body {
 
 .panel h2 {
   margin-top: 0;
-  margin-bottom: 10px;
-  font-size: 1rem;
+  margin-bottom: 12px;
+  font-size: 1.25rem;
   color: var(--text-muted);
 }
 
@@ -125,9 +127,9 @@ body {
 }
 
 .firework-name {
-  margin-top: 8px;
+  margin-top: 10px;
   margin-bottom: 0;
-  font-size: 1.05rem;
+  font-size: 1.35rem;
   max-width: 100%;
   color: var(--text-muted);
   word-break: break-word;
@@ -146,14 +148,20 @@ body {
 
 .delay-controls {
   display: flex;
-  gap: 12px;
-  margin-top: 10px;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.delay-controls button {
+  padding: 12px 24px;
+  font-size: 1.5rem;
 }
 
 button {
   border: 0;
-  border-radius: 10px;
-  padding: 10px 14px;
+  border-radius: 12px;
+  padding: 16px 24px;
+  font-size: 1.25rem;
   font-weight: 700;
   cursor: pointer;
   color: #f8fafc;
@@ -183,26 +191,30 @@ button:disabled {
 }
 
 .dud-zone {
-  margin-top: 16px;
-  padding: 16px;
+  margin-top: 20px;
+  padding: 24px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.9);
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 
 .confirm-label {
   font-weight: 700;
+  font-size: 1.35rem;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 #dud-btn {
   background: var(--danger);
+  padding: 20px 32px;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
 }
 
 #dud-btn:hover {
@@ -230,9 +242,10 @@ td {
 }
 
 .message {
-  margin-top: 14px;
-  padding: 10px 12px;
-  border-radius: 10px;
+  margin-top: 20px;
+  padding: 16px 20px;
+  font-size: 1.25rem;
+  border-radius: 12px;
   background: rgba(248, 250, 252, 0.92);
   font-weight: 700;
 }
