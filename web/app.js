@@ -352,7 +352,7 @@ function adjustNudge(delta) {
   if (startIndex < state.runtimeEvents.length) {
     rebuildRuntimeEvents(startIndex, nowSeconds, false);
   }
-  setMessage(`Nudge adjusted to ${state.nudgeSeconds}s.`);
+  setMessage(`Next firework timing adjusted by ${state.nudgeSeconds}s.`);
 }
 
 async function loadFromFile(file) {
@@ -370,6 +370,10 @@ async function loadFromFile(file) {
 }
 
 function bindEvents() {
+  els.fileInput.addEventListener("click", (event) => {
+    event.target.value = "";
+  });
+
   els.fileInput.addEventListener("change", async (event) => {
     const file = event.target.files?.[0];
     if (!file) {
@@ -409,5 +413,6 @@ function bindEvents() {
   els.dudBtn.addEventListener("click", handleDud);
 }
 
+els.fileInput.value = "";
 renderNudge();
 bindEvents();
