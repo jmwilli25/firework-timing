@@ -28,7 +28,6 @@ class CueEvent:
     firework_name: str
     duration_seconds: float
     call_time_seconds: float
-    expected_burst_seconds: float
     expected_end_seconds: float
 
 
@@ -45,7 +44,7 @@ class StationPlan:
 class Plan:
     """Represents the full generated plan used by the planner and UI."""
 
-    delay_seconds: float
+    nudge_seconds: float
     stations: List[StationPlan]
     events: List[CueEvent]
 
@@ -53,7 +52,7 @@ class Plan:
         """Serialize the plan to a JSON-friendly dictionary."""
         return {
             "version": 1,
-            "delay_seconds": self.delay_seconds,
+            "nudge_seconds": self.nudge_seconds,
             "stations": [
                 {
                     "station_id": station.station_id,
@@ -325,12 +324,9 @@ def _build_event_sequence(
 
 
 def build_schedule(
-    stations: Sequence[StationPlan], delay_seconds: float, rng: random.Random
+    stations: Sequence[StationPlan], nudge_seconds: float, rng: random.Random
 ) -> List[CueEvent]:
     """Build the execution timeline with overlap-preferred cue timing."""
-    if delay_seconds <= 0:
-        raise ValueError("delay_seconds must be greater than zero.")
-
     sequence = _build_event_sequence(stations, rng)
     events: List[CueEvent] = []
 
@@ -339,10 +335,9 @@ def build_schedule(
             call_time = 0.0
         else:
             previous = events[-1]
-            call_time = previous.expected_end_seconds - delay_seconds
+            call_time = previous.expected_end_seconds
 
-        expected_burst = call_time + delay_seconds
-        expected_end = expected_burst + firework.duration_seconds
+        expected_end = call_time + firework.duration_seconds + nudge_seconds
 
         events.append(
             CueEvent(
@@ -352,7 +347,6 @@ def build_schedule(
                 firework_name=firework.name,
                 duration_seconds=firework.duration_seconds,
                 call_time_seconds=call_time,
-                expected_burst_seconds=expected_burst,
                 expected_end_seconds=expected_end,
             )
         )
@@ -362,7 +356,7 @@ def build_schedule(
 
 def build_plan(
     fireworks: Sequence[Firework],
-    delay_seconds: float = 5.0,
+    nudge_seconds: float = 0.0,
     random_seed: int | None = None,
 ) -> Plan:
     """Build the complete station assignment and execution schedule.
@@ -372,8 +366,8 @@ def build_plan(
     """
     rng = random.Random(random_seed)
     stations = assign_fireworks(fireworks, rng=rng)
-    events = build_schedule(stations, delay_seconds=delay_seconds, rng=rng)
-    return Plan(delay_seconds=delay_seconds, stations=stations, events=events)
+    events = build_schedule(stations, nudge_seconds=nudge_seconds, rng=rng)
+    return Plan(nudge_seconds=nudge_seconds, stations=stations, events=events)
 
 
 def render_station_table(stations: Iterable[StationPlan]) -> str:

@@ -4,12 +4,13 @@ const els = {
   countdown: document.getElementById("countdown"),
   calloutPlatform: document.getElementById("callout-platform"),
   calloutFirework: document.getElementById("callout-firework"),
-  delayValue: document.getElementById("delay-value"),
-  delayMinus: document.getElementById("delay-minus"),
-  delayPlus: document.getElementById("delay-plus"),
+  nudgeValue: document.getElementById("nudge-value"),
+  nudgeMinus: document.getElementById("nudge-minus"),
+  nudgePlus: document.getElementById("nudge-plus"),
   startBtn: document.getElementById("start-btn"),
   pauseBtn: document.getElementById("pause-btn"),
   resumeBtn: document.getElementById("resume-btn"),
+  resetConfirm: document.getElementById("reset-confirm"),
   resetBtn: document.getElementById("reset-btn"),
   dudConfirm: document.getElementById("dud-confirm"),
   dudBtn: document.getElementById("dud-btn"),
@@ -21,7 +22,7 @@ const state = {
   loadedPlan: null,
   sequence: [],
   runtimeEvents: [],
-  delaySeconds: 5,
+  nudgeSeconds: 0,
   started: false,
   paused: false,
   startEpochMs: 0,
@@ -35,12 +36,16 @@ function setMessage(text) {
   els.message.textContent = text;
 }
 
-function toFixedTenths(value) {
+function toWholeSeconds(value) {
+  return String(Math.round(value));
+}
+
+function toTenths(value) {
   return (Math.round(value * 10) / 10).toFixed(1);
 }
 
-function renderDelay() {
-  els.delayValue.textContent = toFixedTenths(state.delaySeconds);
+function renderNudge() {
+  els.nudgeValue.textContent = toWholeSeconds(state.nudgeSeconds);
 }
 
 function parsePlan(planObject) {
@@ -61,18 +66,29 @@ function parsePlan(planObject) {
 
   return {
     stations: planObject.stations,
+    events: planObject.events,
     sequence,
-    delay_seconds: Number(planObject.delay_seconds || 5),
+    nudge_seconds: Number(planObject.nudge_seconds || 0),
   };
 }
 
-function renderStationTable(stations) {
+function renderStationTable(stations, events) {
+  const eventsByStation = new Map();
+  const orderedEvents = [...events].sort((a, b) => a.order_index - b.order_index);
+  for (const event of orderedEvents) {
+    if (!eventsByStation.has(event.station_id)) {
+      eventsByStation.set(event.station_id, []);
+    }
+    eventsByStation.get(event.station_id).push(event);
+  }
+
   els.stationTableBody.innerHTML = "";
   for (const station of stations) {
     const row = document.createElement("tr");
 
-    const fwList = station.fireworks
-      .map((firework) => `${firework.name} (${firework.duration_seconds}s)`)
+    const stationEvents = eventsByStation.get(station.station_id) || [];
+    const fwList = stationEvents
+      .map((event, index) => `${index + 1}. ${event.firework_name} (${event.duration_seconds}s)`)
       .join(", ");
 
     row.innerHTML = `
@@ -100,21 +116,16 @@ function rebuildRuntimeEvents(startIndex, anchorSeconds, immediateFirstCall) {
         callTime = 0;
       } else {
         const previous = state.runtimeEvents[i - 1];
-        callTime = Math.max(anchorSeconds, previous.expected_end_seconds - state.delaySeconds);
+        callTime = Math.max(anchorSeconds, previous.call_time_seconds + previous.duration_seconds + state.nudgeSeconds);
       }
     } else {
       const previous = state.runtimeEvents[i - 1];
-      callTime = previous.expected_end_seconds - state.delaySeconds;
+      callTime = previous.call_time_seconds + previous.duration_seconds + state.nudgeSeconds;
     }
-
-    const expectedBurst = callTime + state.delaySeconds;
-    const expectedEnd = expectedBurst + item.duration_seconds;
 
     state.runtimeEvents[i] = {
       ...item,
       call_time_seconds: callTime,
-      expected_burst_seconds: expectedBurst,
-      expected_end_seconds: expectedEnd,
       status: state.runtimeEvents[i]?.status || "pending",
     };
   }
@@ -155,8 +166,8 @@ function callEvent(index, nowSeconds) {
   state.lastCalledIndex = index;
   state.nextIndex = index + 1;
 
-  els.calloutPlatform.textContent = `PLATFORM ${event.station_id}`;
-  els.calloutFirework.textContent = event.firework_name;
+  els.calloutPlatform.textContent = `Platform ${event.station_id}`;
+  els.calloutFirework.textContent = `${event.firework_name} (${event.duration_seconds}s)`;
   flashCallout();
 
   if (state.nextIndex < state.runtimeEvents.length) {
@@ -221,9 +232,9 @@ function renderCountdown() {
 
   const nextEvent = state.runtimeEvents[state.nextIndex];
   const remaining = Math.max(0, nextEvent.call_time_seconds - nowSeconds);
-  els.countdown.textContent = toFixedTenths(remaining);
-  els.calloutPlatform.textContent = `NEXT: PLATFORM ${nextEvent.station_id}`;
-  els.calloutFirework.textContent = nextEvent.firework_name;
+  els.countdown.textContent = toTenths(remaining);
+  els.calloutPlatform.textContent = `Platform ${nextEvent.station_id}`;
+  els.calloutFirework.textContent = `${nextEvent.firework_name} (${nextEvent.duration_seconds}s)`;
 }
 
 function tick() {
@@ -275,6 +286,11 @@ function resumeRun() {
 }
 
 function resetRun() {
+  if (!els.resetConfirm.checked) {
+    setMessage("Check the reset confirmation box before resetting.");
+    return;
+  }
+
   state.started = false;
   state.paused = false;
   state.pauseElapsedSeconds = 0;
@@ -282,12 +298,14 @@ function resetRun() {
   state.lastCalledIndex = -1;
   initializeRuntimeEvents();
   renderCountdown();
+  els.resetConfirm.checked = false;
+  els.resetBtn.disabled = true;
   setMessage("Reset complete.");
 }
 
-function adjustDelay(delta) {
-  state.delaySeconds = Math.max(0.5, state.delaySeconds + delta);
-  renderDelay();
+function adjustNudge(delta) {
+  state.nudgeSeconds = Math.round(state.nudgeSeconds + delta);
+  renderNudge();
 
   if (!state.started) {
     initializeRuntimeEvents();
@@ -299,7 +317,7 @@ function adjustDelay(delta) {
   if (startIndex < state.runtimeEvents.length) {
     rebuildRuntimeEvents(startIndex, nowSeconds, false);
   }
-  setMessage(`Delay adjusted to ${toFixedTenths(state.delaySeconds)}s.`);
+  setMessage(`Nudge adjusted to ${state.nudgeSeconds}s.`);
 }
 
 async function loadFromFile(file) {
@@ -308,9 +326,9 @@ async function loadFromFile(file) {
 
   state.loadedPlan = parsed;
   state.sequence = parsed.sequence;
-  state.delaySeconds = parsed.delay_seconds > 0 ? parsed.delay_seconds : 5;
-  renderDelay();
-  renderStationTable(parsed.stations);
+  state.nudgeSeconds = Math.round(parsed.nudge_seconds || 0);
+  renderNudge();
+  renderStationTable(parsed.stations, parsed.events);
   initializeRuntimeEvents();
   renderCountdown();
   setMessage(`Loaded plan with ${state.sequence.length} scheduled events.`);
@@ -342,15 +360,19 @@ function bindEvents() {
   els.pauseBtn.addEventListener("click", pauseRun);
   els.resumeBtn.addEventListener("click", resumeRun);
   els.resetBtn.addEventListener("click", resetRun);
-  els.delayMinus.addEventListener("click", () => adjustDelay(-0.2));
-  els.delayPlus.addEventListener("click", () => adjustDelay(0.2));
+  els.nudgeMinus.addEventListener("click", () => adjustNudge(-1));
+  els.nudgePlus.addEventListener("click", () => adjustNudge(1));
 
   els.dudConfirm.addEventListener("change", () => {
     els.dudBtn.disabled = !els.dudConfirm.checked;
   });
 
+  els.resetConfirm.addEventListener("change", () => {
+    els.resetBtn.disabled = !els.resetConfirm.checked;
+  });
+
   els.dudBtn.addEventListener("click", handleDud);
 }
 
-renderDelay();
+renderNudge();
 bindEvents();

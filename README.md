@@ -13,7 +13,7 @@ A v1 planner and live cue runner for a 3-station manual fireworks show.
 - Full-screen browser execution UI:
 	- countdown to next platform call,
 	- rotating call order (1 -> 2 -> 3),
-	- live `+/-` delay adjustment,
+	- live `+/-` duration nudge adjustment,
 	- prominent `DUD` button with required confirmation checkbox,
 	- DUD auto-resets confirmation checkbox after activation,
 	- immediate schedule reflow from current wall-clock time after DUD.
@@ -39,7 +39,7 @@ From the repository root:
 PYTHONPATH=src python3 -m firework_timing \
 	--input fireworks.txt \
 	--output plan.json \
-	--delay 5.0 \
+	--nudge 0 \
 	--print-staging
 ```
 
@@ -61,7 +61,7 @@ Use this exact sequence for a repeatable rehearsal:
 PYTHONPATH=src python3 -m firework_timing \
 	--input fireworks.txt \
 	--output plan.json \
-	--delay 5.0 \
+	--nudge 0 \
 	--seed 90 \
 	--print-staging
 ```
@@ -77,7 +77,7 @@ python3 -m http.server 8000 -d web
 4. During rehearsal, test the critical live controls:
 
 - Pause and Resume.
-- Delay `+/-` adjustments.
+- Duration Nudge `+/-` adjustments.
 - DUD flow (confirm checkbox then DUD button).
 
 ## Run the Live UI

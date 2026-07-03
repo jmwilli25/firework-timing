@@ -137,8 +137,8 @@ class PlannerTests(unittest.TestCase):
             ]
         )
         fireworks = parse_fireworks_text(raw)
-        plan_one = build_plan(fireworks, delay_seconds=5.0, random_seed=2026)
-        plan_two = build_plan(fireworks, delay_seconds=5.0, random_seed=2026)
+        plan_one = build_plan(fireworks, nudge_seconds=0.0, random_seed=2026)
+        plan_two = build_plan(fireworks, nudge_seconds=0.0, random_seed=2026)
 
         one_keys = [
             (event.station_id, event.firework_id, event.call_time_seconds)
@@ -164,7 +164,7 @@ class PlannerTests(unittest.TestCase):
                 ]
             )
         )
-        plan = build_plan(fireworks, delay_seconds=5.0)
+        plan = build_plan(fireworks, nudge_seconds=0.0)
         stations = [event.station_id for event in plan.events]
         self.assertEqual([1, 2, 3, 1, 2, 3], stations)
 
@@ -178,19 +178,6 @@ class PlannerTests(unittest.TestCase):
         fireworks = parse_fireworks_text("a=10\nb=10\nc=10")
         with self.assertRaises(ValueError):
             assign_fireworks(fireworks, station_count=2)
-
-    def test_build_schedule_rejects_non_positive_delay(self) -> None:
-        """Schedule builder should reject non-positive delay values."""
-        fireworks = parse_fireworks_text("a=10\nb=10\nc=10")
-        stations = assign_fireworks(fireworks)
-        with self.assertRaises(ValueError):
-            build_schedule(stations, delay_seconds=0, rng=random.Random(1))
-
-    def test_build_plan_rejects_non_positive_delay(self) -> None:
-        """End-to-end plan builder should reject non-positive delay values."""
-        fireworks = parse_fireworks_text("a=10\nb=10\nc=10")
-        with self.assertRaises(ValueError):
-            build_plan(fireworks, delay_seconds=-1)
 
     def test_scheduler_avoids_immediate_repeat_when_possible(self) -> None:
         """Scheduler should avoid same product in back-to-back cues when possible."""
@@ -206,7 +193,7 @@ class PlannerTests(unittest.TestCase):
                 ]
             )
         )
-        plan = build_plan(fireworks, delay_seconds=5.0, random_seed=99)
+        plan = build_plan(fireworks, nudge_seconds=0.0, random_seed=99)
         product_names = [event.firework_name.split("-")[0] for event in plan.events]
         for current, following in zip(product_names, product_names[1:]):
             self.assertNotEqual(current, following)
@@ -225,7 +212,7 @@ class PlannerTests(unittest.TestCase):
                 ]
             )
         )
-        plan = build_plan(fireworks, delay_seconds=5.0, random_seed=90)
+        plan = build_plan(fireworks, nudge_seconds=0.0, random_seed=90)
         product_names = [event.firework_name.split("-")[0] for event in plan.events]
         for current, following in zip(product_names, product_names[1:]):
             self.assertNotEqual(current, following)

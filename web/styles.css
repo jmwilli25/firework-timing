@@ -115,19 +115,33 @@ body {
 
 .callout {
   margin: 0;
-  font-size: clamp(2rem, 7vw, 5rem);
+  font-size: clamp(1.8rem, 5vw, 3.8rem);
   font-weight: 900;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  line-height: 1.05;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .firework-name {
   margin-top: 8px;
   margin-bottom: 0;
-  font-size: 1.2rem;
+  font-size: 1.05rem;
+  max-width: 100%;
+  color: var(--text-muted);
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .panel-callout {
   animation: pulse-in 0.45s ease both;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
 }
 
 .delay-controls {
@@ -160,6 +174,12 @@ button:disabled {
   gap: 12px;
   margin-top: 16px;
   flex-wrap: wrap;
+}
+
+.reset-confirm-label {
+  background: rgba(255, 255, 255, 0.86);
+  border-radius: 10px;
+  padding: 8px 10px;
 }
 
 .dud-zone {

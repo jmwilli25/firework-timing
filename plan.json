@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "delay_seconds": 5.0,
+  "nudge_seconds": 0.0,
   "stations": [
     {
       "station_id": 1,
@@ -329,8 +329,7 @@
       "firework_name": "waterfall-2",
       "duration_seconds": 42.0,
       "call_time_seconds": 0.0,
-      "expected_burst_seconds": 5.0,
-      "expected_end_seconds": 47.0
+      "expected_end_seconds": 42.0
     },
     {
       "order_index": 1,
@@ -339,8 +338,7 @@
       "firework_name": "crackle-1",
       "duration_seconds": 22.0,
       "call_time_seconds": 42.0,
-      "expected_burst_seconds": 47.0,
-      "expected_end_seconds": 69.0
+      "expected_end_seconds": 64.0
     },
     {
       "order_index": 2,
@@ -349,8 +347,7 @@
       "firework_name": "peony-2",
       "duration_seconds": 28.0,
       "call_time_seconds": 64.0,
-      "expected_burst_seconds": 69.0,
-      "expected_end_seconds": 97.0
+      "expected_end_seconds": 92.0
     },
     {
       "order_index": 3,
@@ -359,8 +356,7 @@
       "firework_name": "nebula-1",
       "duration_seconds": 37.0,
       "call_time_seconds": 92.0,
-      "expected_burst_seconds": 97.0,
-      "expected_end_seconds": 134.0
+      "expected_end_seconds": 129.0
     },
     {
       "order_index": 4,
@@ -369,8 +365,7 @@
       "firework_name": "crackle-2",
       "duration_seconds": 22.0,
       "call_time_seconds": 129.0,
-      "expected_burst_seconds": 134.0,
-      "expected_end_seconds": 156.0
+      "expected_end_seconds": 151.0
     },
     {
       "order_index": 5,
@@ -379,8 +374,7 @@
       "firework_name": "brocade-2",
       "duration_seconds": 45.0,
       "call_time_seconds": 151.0,
-      "expected_burst_seconds": 156.0,
-      "expected_end_seconds": 201.0
+      "expected_end_seconds": 196.0
     },
     {
       "order_index": 6,
@@ -389,8 +383,7 @@
       "firework_name": "dragon-2",
       "duration_seconds": 29.0,
       "call_time_seconds": 196.0,
-      "expected_burst_seconds": 201.0,
-      "expected_end_seconds": 230.0
+      "expected_end_seconds": 225.0
     },
     {
       "order_index": 7,
@@ -399,8 +392,7 @@
       "firework_name": "peony-1",
       "duration_seconds": 28.0,
       "call_time_seconds": 225.0,
-      "expected_burst_seconds": 230.0,
-      "expected_end_seconds": 258.0
+      "expected_end_seconds": 253.0
     },
     {
       "order_index": 8,
@@ -409,8 +401,7 @@
       "firework_name": "fish-2",
       "duration_seconds": 24.0,
       "call_time_seconds": 253.0,
-      "expected_burst_seconds": 258.0,
-      "expected_end_seconds": 282.0
+      "expected_end_seconds": 277.0
     },
     {
       "order_index": 9,
@@ -419,8 +410,7 @@
       "firework_name": "dragon-1",
       "duration_seconds": 29.0,
       "call_time_seconds": 277.0,
-      "expected_burst_seconds": 282.0,
-      "expected_end_seconds": 311.0
+      "expected_end_seconds": 306.0
     },
     {
       "order_index": 10,
@@ -429,8 +419,7 @@
       "firework_name": "ghost-2",
       "duration_seconds": 27.0,
       "call_time_seconds": 306.0,
-      "expected_burst_seconds": 311.0,
-      "expected_end_seconds": 338.0
+      "expected_end_seconds": 333.0
     },
     {
       "order_index": 11,
@@ -439,8 +428,7 @@
       "firework_name": "ring-1",
       "duration_seconds": 26.0,
       "call_time_seconds": 333.0,
-      "expected_burst_seconds": 338.0,
-      "expected_end_seconds": 364.0
+      "expected_end_seconds": 359.0
     },
     {
       "order_index": 12,
@@ -449,8 +437,7 @@
       "firework_name": "thunder-2",
       "duration_seconds": 21.0,
       "call_time_seconds": 359.0,
-      "expected_burst_seconds": 364.0,
-      "expected_end_seconds": 385.0
+      "expected_end_seconds": 380.0
     },
     {
       "order_index": 13,
@@ -459,8 +446,7 @@
       "firework_name": "report-1",
       "duration_seconds": 20.0,
       "call_time_seconds": 380.0,
-      "expected_burst_seconds": 385.0,
-      "expected_end_seconds": 405.0
+      "expected_end_seconds": 400.0
     },
     {
       "order_index": 14,
@@ -469,8 +455,7 @@
       "firework_name": "strobe-2",
       "duration_seconds": 18.0,
       "call_time_seconds": 400.0,
-      "expected_burst_seconds": 405.0,
-      "expected_end_seconds": 423.0
+      "expected_end_seconds": 418.0
     },
     {
       "order_index": 15,
@@ -479,8 +464,7 @@
       "firework_name": "palm-1",
       "duration_seconds": 38.0,
       "call_time_seconds": 418.0,
-      "expected_burst_seconds": 423.0,
-      "expected_end_seconds": 461.0
+      "expected_end_seconds": 456.0
     },
     {
       "order_index": 16,
@@ -489,8 +473,7 @@
       "firework_name": "mine-1",
       "duration_seconds": 35.0,
       "call_time_seconds": 456.0,
-      "expected_burst_seconds": 461.0,
-      "expected_end_seconds": 496.0
+      "expected_end_seconds": 491.0
     },
     {
       "order_index": 17,
@@ -499,8 +482,7 @@
       "firework_name": "dahlia-1",
       "duration_seconds": 34.0,
       "call_time_seconds": 491.0,
-      "expected_burst_seconds": 496.0,
-      "expected_end_seconds": 530.0
+      "expected_end_seconds": 525.0
     },
     {
       "order_index": 18,
@@ -509,8 +491,7 @@
       "firework_name": "mine-2",
       "duration_seconds": 35.0,
       "call_time_seconds": 525.0,
-      "expected_burst_seconds": 530.0,
-      "expected_end_seconds": 565.0
+      "expected_end_seconds": 560.0
     },
     {
       "order_index": 19,
@@ -519,8 +500,7 @@
       "firework_name": "spinner-1",
       "duration_seconds": 16.0,
       "call_time_seconds": 560.0,
-      "expected_burst_seconds": 565.0,
-      "expected_end_seconds": 581.0
+      "expected_end_seconds": 576.0
     },
     {
       "order_index": 20,
@@ -529,8 +509,7 @@
       "firework_name": "thunder-1",
       "duration_seconds": 21.0,
       "call_time_seconds": 576.0,
-      "expected_burst_seconds": 581.0,
-      "expected_end_seconds": 602.0
+      "expected_end_seconds": 597.0
     },
     {
       "order_index": 21,
@@ -539,8 +518,7 @@
       "firework_name": "fish-1",
       "duration_seconds": 24.0,
       "call_time_seconds": 597.0,
-      "expected_burst_seconds": 602.0,
-      "expected_end_seconds": 626.0
+      "expected_end_seconds": 621.0
     },
     {
       "order_index": 22,
@@ -549,8 +527,7 @@
       "firework_name": "salute-1",
       "duration_seconds": 14.0,
       "call_time_seconds": 621.0,
-      "expected_burst_seconds": 626.0,
-      "expected_end_seconds": 640.0
+      "expected_end_seconds": 635.0
     },
     {
       "order_index": 23,
@@ -559,8 +536,7 @@
       "firework_name": "chrysanthemum-2",
       "duration_seconds": 32.0,
       "call_time_seconds": 635.0,
-      "expected_burst_seconds": 640.0,
-      "expected_end_seconds": 672.0
+      "expected_end_seconds": 667.0
     },
     {
       "order_index": 24,
@@ -569,8 +545,7 @@
       "firework_name": "willow-1",
       "duration_seconds": 50.0,
       "call_time_seconds": 667.0,
-      "expected_burst_seconds": 672.0,
-      "expected_end_seconds": 722.0
+      "expected_end_seconds": 717.0
     },
     {
       "order_index": 25,
@@ -579,8 +554,7 @@
       "firework_name": "horsetail-2",
       "duration_seconds": 40.0,
       "call_time_seconds": 717.0,
-      "expected_burst_seconds": 722.0,
-      "expected_end_seconds": 762.0
+      "expected_end_seconds": 757.0
     },
     {
       "order_index": 26,
@@ -589,8 +563,7 @@
       "firework_name": "volcano-2",
       "duration_seconds": 36.0,
       "call_time_seconds": 757.0,
-      "expected_burst_seconds": 762.0,
-      "expected_end_seconds": 798.0
+      "expected_end_seconds": 793.0
     },
     {
       "order_index": 27,
@@ -599,8 +572,7 @@
       "firework_name": "fan-1",
       "duration_seconds": 31.0,
       "call_time_seconds": 793.0,
-      "expected_burst_seconds": 798.0,
-      "expected_end_seconds": 829.0
+      "expected_end_seconds": 824.0
     },
     {
       "order_index": 28,
@@ -609,8 +581,7 @@
       "firework_name": "willow-2",
       "duration_seconds": 50.0,
       "call_time_seconds": 824.0,
-      "expected_burst_seconds": 829.0,
-      "expected_end_seconds": 879.0
+      "expected_end_seconds": 874.0
     },
     {
       "order_index": 29,
@@ -619,8 +590,7 @@
       "firework_name": "horsetail-1",
       "duration_seconds": 40.0,
       "call_time_seconds": 874.0,
-      "expected_burst_seconds": 879.0,
-      "expected_end_seconds": 919.0
+      "expected_end_seconds": 914.0
     },
     {
       "order_index": 30,
@@ -629,8 +599,7 @@
       "firework_name": "spinner-2",
       "duration_seconds": 16.0,
       "call_time_seconds": 914.0,
-      "expected_burst_seconds": 919.0,
-      "expected_end_seconds": 935.0
+      "expected_end_seconds": 930.0
     },
     {
       "order_index": 31,
@@ -639,8 +608,7 @@
       "firework_name": "nebula-2",
       "duration_seconds": 37.0,
       "call_time_seconds": 930.0,
-      "expected_burst_seconds": 935.0,
-      "expected_end_seconds": 972.0
+      "expected_end_seconds": 967.0
     },
     {
       "order_index": 32,
@@ -649,8 +617,7 @@
       "firework_name": "chrysanthemum-1",
       "duration_seconds": 32.0,
       "call_time_seconds": 967.0,
-      "expected_burst_seconds": 972.0,
-      "expected_end_seconds": 1004.0
+      "expected_end_seconds": 999.0
     },
     {
       "order_index": 33,
@@ -659,8 +626,7 @@
       "firework_name": "comet-1",
       "duration_seconds": 25.0,
       "call_time_seconds": 999.0,
-      "expected_burst_seconds": 1004.0,
-      "expected_end_seconds": 1029.0
+      "expected_end_seconds": 1024.0
     },
     {
       "order_index": 34,
@@ -669,8 +635,7 @@
       "firework_name": "fan-2",
       "duration_seconds": 31.0,
       "call_time_seconds": 1024.0,
-      "expected_burst_seconds": 1029.0,
-      "expected_end_seconds": 1060.0
+      "expected_end_seconds": 1055.0
     },
     {
       "order_index": 35,
@@ -679,8 +644,7 @@
       "firework_name": "ring-2",
       "duration_seconds": 26.0,
       "call_time_seconds": 1055.0,
-      "expected_burst_seconds": 1060.0,
-      "expected_end_seconds": 1086.0
+      "expected_end_seconds": 1081.0
     },
     {
       "order_index": 36,
@@ -689,8 +653,7 @@
       "firework_name": "volcano-1",
       "duration_seconds": 36.0,
       "call_time_seconds": 1081.0,
-      "expected_burst_seconds": 1086.0,
-      "expected_end_seconds": 1122.0
+      "expected_end_seconds": 1117.0
     },
     {
       "order_index": 37,
@@ -699,8 +662,7 @@
       "firework_name": "crown-2",
       "duration_seconds": 33.0,
       "call_time_seconds": 1117.0,
-      "expected_burst_seconds": 1122.0,
-      "expected_end_seconds": 1155.0
+      "expected_end_seconds": 1150.0
     },
     {
       "order_index": 38,
@@ -709,8 +671,7 @@
       "firework_name": "palm-2",
       "duration_seconds": 38.0,
       "call_time_seconds": 1150.0,
-      "expected_burst_seconds": 1155.0,
-      "expected_end_seconds": 1193.0
+      "expected_end_seconds": 1188.0
     },
     {
       "order_index": 39,
@@ -719,8 +680,7 @@
       "firework_name": "report-2",
       "duration_seconds": 20.0,
       "call_time_seconds": 1188.0,
-      "expected_burst_seconds": 1193.0,
-      "expected_end_seconds": 1213.0
+      "expected_end_seconds": 1208.0
     },
     {
       "order_index": 40,
@@ -729,8 +689,7 @@
       "firework_name": "comet-2",
       "duration_seconds": 25.0,
       "call_time_seconds": 1208.0,
-      "expected_burst_seconds": 1213.0,
-      "expected_end_seconds": 1238.0
+      "expected_end_seconds": 1233.0
     },
     {
       "order_index": 41,
@@ -739,8 +698,7 @@
       "firework_name": "strobe-1",
       "duration_seconds": 18.0,
       "call_time_seconds": 1233.0,
-      "expected_burst_seconds": 1238.0,
-      "expected_end_seconds": 1256.0
+      "expected_end_seconds": 1251.0
     },
     {
       "order_index": 42,
@@ -749,8 +707,7 @@
       "firework_name": "crown-1",
       "duration_seconds": 33.0,
       "call_time_seconds": 1251.0,
-      "expected_burst_seconds": 1256.0,
-      "expected_end_seconds": 1289.0
+      "expected_end_seconds": 1284.0
     },
     {
       "order_index": 43,
@@ -759,8 +716,7 @@
       "firework_name": "crossette-2",
       "duration_seconds": 30.0,
       "call_time_seconds": 1284.0,
-      "expected_burst_seconds": 1289.0,
-      "expected_end_seconds": 1319.0
+      "expected_end_seconds": 1314.0
     },
     {
       "order_index": 44,
@@ -769,8 +725,7 @@
       "firework_name": "brocade-1",
       "duration_seconds": 45.0,
       "call_time_seconds": 1314.0,
-      "expected_burst_seconds": 1319.0,
-      "expected_end_seconds": 1364.0
+      "expected_end_seconds": 1359.0
     },
     {
       "order_index": 45,
@@ -779,8 +734,7 @@
       "firework_name": "salute-2",
       "duration_seconds": 14.0,
       "call_time_seconds": 1359.0,
-      "expected_burst_seconds": 1364.0,
-      "expected_end_seconds": 1378.0
+      "expected_end_seconds": 1373.0
     },
     {
       "order_index": 46,
@@ -789,8 +743,7 @@
       "firework_name": "dahlia-2",
       "duration_seconds": 34.0,
       "call_time_seconds": 1373.0,
-      "expected_burst_seconds": 1378.0,
-      "expected_end_seconds": 1412.0
+      "expected_end_seconds": 1407.0
     },
     {
       "order_index": 47,
@@ -799,8 +752,7 @@
       "firework_name": "crossette-1",
       "duration_seconds": 30.0,
       "call_time_seconds": 1407.0,
-      "expected_burst_seconds": 1412.0,
-      "expected_end_seconds": 1442.0
+      "expected_end_seconds": 1437.0
     },
     {
       "order_index": 48,
@@ -809,8 +761,7 @@
       "firework_name": "ghost-1",
       "duration_seconds": 27.0,
       "call_time_seconds": 1437.0,
-      "expected_burst_seconds": 1442.0,
-      "expected_end_seconds": 1469.0
+      "expected_end_seconds": 1464.0
     },
     {
       "order_index": 49,
@@ -819,8 +770,7 @@
       "firework_name": "waterfall-1",
       "duration_seconds": 42.0,
       "call_time_seconds": 1464.0,
-      "expected_burst_seconds": 1469.0,
-      "expected_end_seconds": 1511.0
+      "expected_end_seconds": 1506.0
     }
   ]
 }
