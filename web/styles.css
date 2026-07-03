@@ -246,7 +246,7 @@ td {
     transform: scale(1);
     color: #0b1324;
   }
-  20% {
+  10%, 95% {
     transform: scale(1.08);
     color: #b91c1c;
   }
