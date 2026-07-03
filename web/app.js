@@ -30,6 +30,7 @@ const state = {
   tickerId: null,
   nextIndex: 0,
   lastCalledIndex: -1,
+  calloutLockUntil: 0,
 };
 
 function setMessage(text) {
@@ -135,6 +136,7 @@ function initializeRuntimeEvents() {
   rebuildRuntimeEvents(0, 0, false);
   state.nextIndex = 0;
   state.lastCalledIndex = -1;
+  state.calloutLockUntil = 0;
 }
 
 function getElapsedSeconds() {
@@ -164,6 +166,8 @@ function callEvent(index, nowSeconds) {
   event.status = "called";
   state.lastCalledIndex = index;
   state.nextIndex = index + 1;
+
+  state.calloutLockUntil = nowSeconds + 2.0;
 
   els.calloutPlatform.textContent = `Platform ${event.station_id}`;
   els.calloutFirework.textContent = `${event.firework_name} (${event.duration_seconds}s)`;
@@ -232,8 +236,11 @@ function renderCountdown() {
   const nextEvent = state.runtimeEvents[state.nextIndex];
   const remaining = Math.max(0, nextEvent.call_time_seconds - nowSeconds);
   els.countdown.textContent = toTenths(remaining);
-  els.calloutPlatform.textContent = `Platform ${nextEvent.station_id}`;
-  els.calloutFirework.textContent = `${nextEvent.firework_name} (${nextEvent.duration_seconds}s)`;
+
+  if (nowSeconds >= state.calloutLockUntil) {
+    els.calloutPlatform.textContent = `Platform ${nextEvent.station_id}`;
+    els.calloutFirework.textContent = `${nextEvent.firework_name} (${nextEvent.duration_seconds}s)`;
+  }
 }
 
 function tick() {
@@ -295,6 +302,7 @@ function resetRun() {
   state.pauseElapsedSeconds = 0;
   state.nextIndex = 0;
   state.lastCalledIndex = -1;
+  state.calloutLockUntil = 0;
   initializeRuntimeEvents();
   renderCountdown();
   els.resetConfirm.checked = false;
