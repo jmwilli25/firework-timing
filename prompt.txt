@@ -1,0 +1,54 @@
+I am the self appointed fireworks timing czar.
+
+We are manually lighting consumer-grade fireworks and want to reduce empty sky time between visible fireworks as much as possible.
+
+We have three fireworks stations, one person at each station, and me acting as the timing czar.
+
+Each firework box has a duration in seconds.
+That duration is the visible firing time for that firework.
+
+I need software to help plan and execute the fireworks display.
+
+Planning requirements:
+- Input is a list of fireworks in key/value form: firework_name=seconds.
+- Divide fireworks across three stations so total time per station is as balanced as possible.
+- If total fireworks mod 3 = 1, station 1 gets the extra firework.
+- If total fireworks mod 3 = 2, stations 1 and 2 get the extra fireworks.
+- Output should be a visual table showing each station, assigned fireworks, and total station duration.
+- Save/load support is required so plans can be reused for testing and future shows.
+- Saved plan format must be JSON only.
+- Planner output should be deterministic for the same input.
+
+Execution requirements:
+- Display supports manual station calls during the live show.
+- Call order rotates station 1, station 2, station 3, repeating.
+- Overlap is allowed and preferred.
+- Goal is to call the next station early enough that the next firework starts before the previous one fully ends, minimizing dead sky time.
+- Use a configurable call-to-burst delay to represent reaction time and fuse burn.
+- Default delay starts at 5 seconds.
+- Delay must be adjustable live during execution with on-screen + and - controls.
+- Execution UI should be full-screen and show:
+  - current platform to call,
+  - countdown to that call,
+  - active delay value,
+  - and a 2-second prompt window with the platform name.
+- UI is optimized for live operation, not post-show analytics.
+
+Dud firework handling:
+- A dud is treated as spent and discarded.
+- There must be a prominent on-screen DUD button during execution.
+- DUD must require a confirmation checkbox before the button can be activated.
+- The confirmation checkbox must auto-reset to unchecked after each DUD activation to prevent accidental double-dud input.
+- When DUD is clicked, assume I call the next platform immediately at that same moment.
+- Immediately advance display to the next platform callout.
+- Account for reaction time and fuse burn by applying the current delay from that moment.
+- Reflow the remaining schedule immediately from current wall-clock time.
+- Do not wait for the dud firework’s originally planned duration to expire.
+
+Edge cases and behavior:
+- Avoid any time with no fireworks in the sky whenever possible.
+- If perfect no-gap continuity is impossible, report that clearly and provide the best available schedule.
+- Grande finale behavior is not fully specified yet and can be deferred or treated as a configurable end segment.
+- I am open to alternate suggestions if they improve planning or execution.
+
+Before writing any code, ask any questions needed to ensure shared understanding of the problem and desired outcome.
