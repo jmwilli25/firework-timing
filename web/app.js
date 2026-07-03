@@ -66,11 +66,20 @@ function parsePlan(planObject) {
     firework_name: event.firework_name,
     duration_seconds: Number(event.duration_seconds),
     firework_id: event.firework_id,
+    is_finale: false,
   }));
 
   if (sequence.length === 0) {
     throw new Error("Plan has no events.");
   }
+
+  sequence.push({
+    station_id: "ALL",
+    firework_name: "GRAND FINALE",
+    duration_seconds: 0,
+    firework_id: "finale",
+    is_finale: true,
+  });
 
   return {
     stations: planObject.stations,
@@ -118,16 +127,18 @@ function rebuildRuntimeEvents(startIndex, anchorSeconds, immediateFirstCall) {
     let callTime;
     if (i === startIndex) {
       if (immediateFirstCall) {
-        callTime = anchorSeconds;
+        callTime = item.is_finale ? anchorSeconds + 10 : anchorSeconds;
       } else if (i === 0) {
         callTime = 0;
       } else {
         const previous = state.runtimeEvents[i - 1];
-        callTime = Math.max(anchorSeconds, previous.call_time_seconds + previous.duration_seconds + state.nudgeSeconds);
+        const prevEnd = previous.call_time_seconds + previous.duration_seconds + state.nudgeSeconds;
+        callTime = Math.max(anchorSeconds, item.is_finale ? prevEnd + 10 : prevEnd);
       }
     } else {
       const previous = state.runtimeEvents[i - 1];
-      callTime = previous.call_time_seconds + previous.duration_seconds + state.nudgeSeconds;
+      const prevEnd = previous.call_time_seconds + previous.duration_seconds + state.nudgeSeconds;
+      callTime = item.is_finale ? prevEnd + 10 : prevEnd;
     }
 
     state.runtimeEvents[i] = {
@@ -176,8 +187,8 @@ function callEvent(index, nowSeconds) {
 
   state.calloutLockUntil = nowSeconds + 2.0;
 
-  els.calloutPlatform.textContent = `Platform ${event.station_id}`;
-  els.calloutFirework.textContent = `${event.firework_name} (${event.duration_seconds}s)`;
+  els.calloutPlatform.textContent = event.station_id === "ALL" ? "ALL PLATFORMS" : `Platform ${event.station_id}`;
+  els.calloutFirework.textContent = event.is_finale ? "FIRE THE FINALE!" : `${event.firework_name} (${event.duration_seconds}s)`;
   flashCallout();
 
   if (state.nextIndex < state.runtimeEvents.length) {
@@ -237,10 +248,12 @@ function renderCountdown() {
 
   if (state.nextIndex >= state.runtimeEvents.length) {
     els.countdown.textContent = "DONE";
-    els.calloutPlatform.textContent = "🎇 SHOW COMPLETE 🎇";
-    els.calloutFirework.textContent = "Great job, Timing Czar!";
-    document.body.classList.add("show-done");
-    setMessage("Plan complete.");
+    if (nowSeconds >= state.calloutLockUntil && !document.body.classList.contains("show-done")) {
+      els.calloutPlatform.textContent = "🎇 SHOW COMPLETE 🎇";
+      els.calloutFirework.textContent = "Great job, Timing Czar!";
+      document.body.classList.add("show-done");
+      setMessage("Plan complete.");
+    }
     return;
   }
 
@@ -249,8 +262,8 @@ function renderCountdown() {
   els.countdown.textContent = toTenths(remaining);
 
   if (nowSeconds >= state.calloutLockUntil) {
-    els.calloutPlatform.textContent = `Platform ${nextEvent.station_id}`;
-    els.calloutFirework.textContent = `${nextEvent.firework_name} (${nextEvent.duration_seconds}s)`;
+    els.calloutPlatform.textContent = nextEvent.station_id === "ALL" ? "NEXT: ALL PLATFORMS" : `Platform ${nextEvent.station_id}`;
+    els.calloutFirework.textContent = nextEvent.is_finale ? "10s PAUSE -> FINALE" : `${nextEvent.firework_name} (${nextEvent.duration_seconds}s)`;
   }
 }
 

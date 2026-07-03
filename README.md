@@ -98,6 +98,12 @@ Use **Load Plan JSON** to choose the generated `plan.json` file.
 - On DUD click:
 	- current firework is treated as spent,
 	- next platform is called immediately,
-	- reaction/fuse delay is applied from that exact moment,
 	- all remaining cue times reflow from current wall-clock time,
 	- confirmation checkbox auto-resets to unchecked.
+
+## The Grande Finale
+
+The software automatically injects a **10-second dramatic pause** after the very last firework in the plan.
+- The UI will count down a 10s gap after the last firework is supposed to wind down overhead.
+- At `0`, the interface will rapidly flash **ALL PLATFORMS** and **FIRE THE FINALE!**
+- *Show prep tip:* You do not need to put your finale boxes in `fireworks.txt`. Have your operators pre-stage their 3 finale boxes off to the side, taped together with a single master fuse. When the screen prompts the finale, everyone lights their pad at exactly the same time!
